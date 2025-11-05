@@ -62,12 +62,12 @@ def load_crop_model():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading crop model: {str(e)}")
 
-def load_disease_model():
-    """Load disease detection model"""
-    try:
-        return tf.keras.models.load_model('plant_disease_model.keras')
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error loading disease model: {str(e)}")
+# def load_disease_model():
+#     """Load disease detection model"""
+#     try:
+#         return tf.keras.models.load_model('plant_disease_model.keras')
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Error loading disease model: {str(e)}")
 
 def load_ferti_model():
     """Load fertilizer recommendation model"""
@@ -78,7 +78,7 @@ def load_ferti_model():
 
 # Load models at startup
 crop_model, label_encoder = load_crop_model()
-disease_model = load_disease_model()
+# disease_model = load_disease_model()
 ferti_model = load_ferti_model()
 
 # Mappings
@@ -91,25 +91,25 @@ CROP_TYPES = {
     "Wheat": 6, "Tobacco": 7, "Barley": 8, "Oil seeds": 9, "Ground Nuts": 10, "Maize": 11
 }
 
-DISEASE_CLASSES = [
-    'Apple - Apple Scab', 'Apple - Black Rot', 'Apple - Cedar Apple Rust', 'Apple - Healthy',
-    'Blueberry - Healthy', 'Cherry - Powdery Mildew', 'Cherry - Healthy',
-    'Corn - Cercospora Leaf Spot (Gray Leaf Spot)', 'Corn - Common Rust', 'Corn - Northern Leaf Blight',
-    'Corn - Healthy', 'Grape - Black Rot', 'Grape - Esca (Black Measles)',
-    'Grape - Leaf Blight (Isariopsis Leaf Spot)', 'Grape - Healthy',
-    'Orange - Huanglongbing (Citrus Greening)', 'Peach - Bacterial Spot', 'Peach - Healthy',
-    'Bell Pepper - Bacterial Spot', 'Bell Pepper - Healthy', 'Potato - Early Blight',
-    'Potato - Late Blight', 'Potato - Healthy', 'Raspberry - Healthy', 'Soybean - Healthy',
-    'Squash - Powdery Mildew', 'Strawberry - Leaf Scorch', 'Strawberry - Healthy',
-    'Tomato - Bacterial Spot', 'Tomato - Early Blight', 'Tomato - Late Blight',
-    'Tomato - Leaf Mold', 'Tomato - Septoria Leaf Spot',
-    'Tomato - Spider Mites (Two-Spotted Spider Mite)', 'Tomato - Target Spot',
-    'Tomato - Yellow Leaf Curl Virus', 'Tomato - Mosaic Virus', 'Tomato - Healthy',
-    'Wheat - Brown Rust', 'Wheat - Healthy', 'Wheat - Yellow Rust',
-    'Rice - Bacterial Leaf Blight', 'Rice - Brown Spot', 'Rice - Healthy',
-    'Rice - Hispa', 'Rice - Leaf Blast', 'Rice - Leaf Scald', 'Rice - Narrow Brown Spot',
-    'Rice - Neck Blast', 'Rice - Sheath Blight', 'Rice - Tungro'
-]
+# DISEASE_CLASSES = [
+#     'Apple - Apple Scab', 'Apple - Black Rot', 'Apple - Cedar Apple Rust', 'Apple - Healthy',
+#     'Blueberry - Healthy', 'Cherry - Powdery Mildew', 'Cherry - Healthy',
+#     'Corn - Cercospora Leaf Spot (Gray Leaf Spot)', 'Corn - Common Rust', 'Corn - Northern Leaf Blight',
+#     'Corn - Healthy', 'Grape - Black Rot', 'Grape - Esca (Black Measles)',
+#     'Grape - Leaf Blight (Isariopsis Leaf Spot)', 'Grape - Healthy',
+#     'Orange - Huanglongbing (Citrus Greening)', 'Peach - Bacterial Spot', 'Peach - Healthy',
+#     'Bell Pepper - Bacterial Spot', 'Bell Pepper - Healthy', 'Potato - Early Blight',
+#     'Potato - Late Blight', 'Potato - Healthy', 'Raspberry - Healthy', 'Soybean - Healthy',
+#     'Squash - Powdery Mildew', 'Strawberry - Leaf Scorch', 'Strawberry - Healthy',
+#     'Tomato - Bacterial Spot', 'Tomato - Early Blight', 'Tomato - Late Blight',
+#     'Tomato - Leaf Mold', 'Tomato - Septoria Leaf Spot',
+#     'Tomato - Spider Mites (Two-Spotted Spider Mite)', 'Tomato - Target Spot',
+#     'Tomato - Yellow Leaf Curl Virus', 'Tomato - Mosaic Virus', 'Tomato - Healthy',
+#     'Wheat - Brown Rust', 'Wheat - Healthy', 'Wheat - Yellow Rust',
+#     'Rice - Bacterial Leaf Blight', 'Rice - Brown Spot', 'Rice - Healthy',
+#     'Rice - Hispa', 'Rice - Leaf Blast', 'Rice - Leaf Scald', 'Rice - Narrow Brown Spot',
+#     'Rice - Neck Blast', 'Rice - Sheath Blight', 'Rice - Tungro'
+# ]
 
 # API Endpoints
 @app.get("/")
@@ -169,42 +169,42 @@ async def predict_fertilizer(request: FertilizerPredictionRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error in fertilizer prediction: {str(e)}")
 
-@app.post("/predict/disease")
-async def predict_disease(file: UploadFile = File(...)):
-    try:
-        # Validate file type
-        if not file.content_type.startswith('image/'):
-            raise HTTPException(status_code=400, detail="File must be an image")
+# @app.post("/predict/disease")
+# async def predict_disease(file: UploadFile = File(...)):
+#     try:
+#         # Validate file type
+#         if not file.content_type.startswith('image/'):
+#             raise HTTPException(status_code=400, detail="File must be an image")
         
-        # Read file content once and store in memory
-        contents = await file.read()
+#         # Read file content once and store in memory
+#         contents = await file.read()
         
-        # Load image from bytes
-        from PIL import Image
-        image = Image.open(BytesIO(contents))
-        image = image.resize((128, 128))
+#         # Load image from bytes
+#         from PIL import Image
+#         image = Image.open(BytesIO(contents))
+#         image = image.resize((128, 128))
         
-        # Convert to array and preprocess
-        input_arr = tf.keras.preprocessing.image.img_to_array(image)
-        input_arr = np.expand_dims(input_arr, axis=0)
+#         # Convert to array and preprocess
+#         input_arr = tf.keras.preprocessing.image.img_to_array(image)
+#         input_arr = np.expand_dims(input_arr, axis=0)
         
-        # Make prediction
-        prediction = disease_model.predict(input_arr)
-        result_index = np.argmax(prediction)
-        confidence = float(np.max(prediction))
+#         # Make prediction
+#         prediction = disease_model.predict(input_arr)
+#         result_index = np.argmax(prediction)
+#         confidence = float(np.max(prediction))
         
-        diagnosis = DISEASE_CLASSES[result_index]
-        plant, disease = diagnosis.split(" - ")
+#         diagnosis = DISEASE_CLASSES[result_index]
+#         plant, disease = diagnosis.split(" - ")
         
-        return {
-            "prediction": diagnosis,
-            "plant": plant,
-            "disease": disease,
-            "is_healthy": "Healthy" in disease,
-            "confidence": confidence
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error in disease prediction: {str(e)}")
+#         return {
+#             "prediction": diagnosis,
+#             "plant": plant,
+#             "disease": disease,
+#             "is_healthy": "Healthy" in disease,
+#             "confidence": confidence
+#         }
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Error in disease prediction: {str(e)}")
 
 @app.get("/options/soil-types")
 async def get_soil_types():
