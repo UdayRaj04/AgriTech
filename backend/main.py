@@ -13,12 +13,12 @@ from io import BytesIO
 
 # Initialize FastAPI app
 app = FastAPI(title="SmartAgri AI API", version="1.0.0")
-FRONTEND_URL = "http://localhost:3000"
+# Front = os.getenv("FRONTEND_URL")
 
 # Add CORS middlewareallow_origins=[ FRONTEND_URL , "http://127.0.0.1:3000"],
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[ FRONTEND_URL, "http://127.0.0.1:3000" ],
+    allow_origins=[ "http://localhost:3000" , "http://127.0.0.1:3000" ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -169,42 +169,23 @@ async def predict_fertilizer(request: FertilizerPredictionRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error in fertilizer prediction: {str(e)}")
 
-# @app.post("/predict/disease")
-# async def predict_disease(file: UploadFile = File(...)):
-#     try:
-#         # Validate file type
-#         if not file.content_type.startswith('image/'):
-#             raise HTTPException(status_code=400, detail="File must be an image")
+@app.post("/predict/disease")
+async def predict_disease(file: UploadFile = File(...)):
+    try:
+        diagnosis = "render(free plan) cannot able to deploy plant disease detection model try it LOCALLY"
+        plant = ""
+        disease = "render(free plan) cannot able to deploy plant disease detection model try it LOCALLY"
+        confidence = 00
         
-#         # Read file content once and store in memory
-#         contents = await file.read()
-        
-#         # Load image from bytes
-#         from PIL import Image
-#         image = Image.open(BytesIO(contents))
-#         image = image.resize((128, 128))
-        
-#         # Convert to array and preprocess
-#         input_arr = tf.keras.preprocessing.image.img_to_array(image)
-#         input_arr = np.expand_dims(input_arr, axis=0)
-        
-#         # Make prediction
-#         prediction = disease_model.predict(input_arr)
-#         result_index = np.argmax(prediction)
-#         confidence = float(np.max(prediction))
-        
-#         diagnosis = DISEASE_CLASSES[result_index]
-#         plant, disease = diagnosis.split(" - ")
-        
-#         return {
-#             "prediction": diagnosis,
-#             "plant": plant,
-#             "disease": disease,
-#             "is_healthy": "Healthy" in disease,
-#             "confidence": confidence
-#         }
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error in disease prediction: {str(e)}")
+        return {
+            "prediction": diagnosis,
+            "plant": plant,
+            "disease": disease,
+            "is_healthy": "Healthy" in disease,
+            "confidence": confidence
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in disease prediction: {str(e)}")
 
 @app.get("/options/soil-types")
 async def get_soil_types():

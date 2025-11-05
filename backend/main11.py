@@ -52,15 +52,15 @@ class PredictionResponse(BaseModel):
 class FertilizerResponse(BaseModel):
     prediction: str
 
-# # Load models
-# def load_crop_model():
-#     """Load crop recommendation model and label encoder"""
-#     try:
-#         model = joblib.load('recommendation_model.pkl')
-#         le = joblib.load('recommendation_label_encoder.pkl')
-#         return model, le
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error loading crop model: {str(e)}")
+# Load models
+def load_crop_model():
+    """Load crop recommendation model and label encoder"""
+    try:
+        model = joblib.load('recommendation_model.pkl')
+        le = joblib.load('recommendation_label_encoder.pkl')
+        return model, le
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading crop model: {str(e)}")
 
 def load_disease_model():
     """Load disease detection model"""
@@ -69,27 +69,27 @@ def load_disease_model():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading disease model: {str(e)}")
 
-# def load_ferti_model():
-#     """Load fertilizer recommendation model"""
-#     try:
-#         return joblib.load("fertilizer_recommendation_model.pkl")
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error loading fertilizer model: {str(e)}")
+def load_ferti_model():
+    """Load fertilizer recommendation model"""
+    try:
+        return joblib.load("fertilizer_recommendation_model.pkl")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading fertilizer model: {str(e)}")
 
 # Load models at startup
-# crop_model, label_encoder = load_crop_model()
+crop_model, label_encoder = load_crop_model()
 disease_model = load_disease_model()
-# ferti_model = load_ferti_model()
+ferti_model = load_ferti_model()
 
 # Mappings
-# SOIL_TYPES = {
-#     "Loamy": 1, "Sandy": 2, "Clayey": 3, "Black": 4, "Red": 5
-# }
+SOIL_TYPES = {
+    "Loamy": 1, "Sandy": 2, "Clayey": 3, "Black": 4, "Red": 5
+}
 
-# CROP_TYPES = {
-#     "Sugarcane": 1, "Cotton": 2, "Millets": 3, "Paddy": 4, "Pulses": 5,
-#     "Wheat": 6, "Tobacco": 7, "Barley": 8, "Oil seeds": 9, "Ground Nuts": 10, "Maize": 11
-# }
+CROP_TYPES = {
+    "Sugarcane": 1, "Cotton": 2, "Millets": 3, "Paddy": 4, "Pulses": 5,
+    "Wheat": 6, "Tobacco": 7, "Barley": 8, "Oil seeds": 9, "Ground Nuts": 10, "Maize": 11
+}
 
 DISEASE_CLASSES = [
     'Apple - Apple Scab', 'Apple - Black Rot', 'Apple - Cedar Apple Rust', 'Apple - Healthy',
@@ -116,58 +116,58 @@ DISEASE_CLASSES = [
 async def root():
     return {"message": "SmartAgri AI API is running!"}
 
-# @app.get("/health")
-# async def health_check():
-#     return {"status": "healthy", "models_loaded": True}
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "models_loaded": True}
 
-# @app.post("/predict/crop", response_model=PredictionResponse)
-# async def predict_crop(request: CropPredictionRequest):
-#     try:
-#         # Prepare input data
-#         input_data = np.array([[
-#             request.nitrogen, request.phosphorus, request.potassium,
-#             request.temperature, request.humidity, request.ph, request.rainfall
-#         ]])
+@app.post("/predict/crop", response_model=PredictionResponse)
+async def predict_crop(request: CropPredictionRequest):
+    try:
+        # Prepare input data
+        input_data = np.array([[
+            request.nitrogen, request.phosphorus, request.potassium,
+            request.temperature, request.humidity, request.ph, request.rainfall
+        ]])
         
-#         # Get prediction probabilities
-#         probs = crop_model.predict_proba(input_data)
-#         top3_idx = np.argsort(probs, axis=1)[:, -3:][:, ::-1][0]
-#         top3_crops = label_encoder.inverse_transform(top3_idx)
+        # Get prediction probabilities
+        probs = crop_model.predict_proba(input_data)
+        top3_idx = np.argsort(probs, axis=1)[:, -3:][:, ::-1][0]
+        top3_crops = label_encoder.inverse_transform(top3_idx)
         
-#         # Calculate confidence
-#         confidence = float(np.max(probs))
+        # Calculate confidence
+        confidence = float(np.max(probs))
         
-#         return PredictionResponse(
-#             prediction=top3_crops[0],
-#             confidence=confidence,
-#             alternatives=list(top3_crops)
-#         )
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error in crop prediction: {str(e)}")
+        return PredictionResponse(
+            prediction=top3_crops[0],
+            confidence=confidence,
+            alternatives=list(top3_crops)
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in crop prediction: {str(e)}")
 
-# @app.post("/predict/fertilizer", response_model=FertilizerResponse)
-# async def predict_fertilizer(request: FertilizerPredictionRequest):
-#     try:
-#         # Convert categorical inputs to numeric
-#         soil_num = SOIL_TYPES.get(request.soil_type)
-#         crop_num = CROP_TYPES.get(request.crop_type)
+@app.post("/predict/fertilizer", response_model=FertilizerResponse)
+async def predict_fertilizer(request: FertilizerPredictionRequest):
+    try:
+        # Convert categorical inputs to numeric
+        soil_num = SOIL_TYPES.get(request.soil_type)
+        crop_num = CROP_TYPES.get(request.crop_type)
         
-#         if soil_num is None or crop_num is None:
-#             raise HTTPException(status_code=400, detail="Invalid soil or crop type")
+        if soil_num is None or crop_num is None:
+            raise HTTPException(status_code=400, detail="Invalid soil or crop type")
         
-#         # Prepare input array
-#         user_input = np.array([[
-#             request.temperature, request.humidity, request.moisture,
-#             request.nitrogen, request.potassium, request.phosphorus,
-#             soil_num, crop_num
-#         ]])
+        # Prepare input array
+        user_input = np.array([[
+            request.temperature, request.humidity, request.moisture,
+            request.nitrogen, request.potassium, request.phosphorus,
+            soil_num, crop_num
+        ]])
         
-#         # Make prediction
-#         prediction = ferti_model.predict(user_input)
+        # Make prediction
+        prediction = ferti_model.predict(user_input)
         
-#         return FertilizerResponse(prediction=prediction[0])
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Error in fertilizer prediction: {str(e)}")
+        return FertilizerResponse(prediction=prediction[0])
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error in fertilizer prediction: {str(e)}")
 
 @app.post("/predict/disease")
 async def predict_disease(file: UploadFile = File(...)):
@@ -206,13 +206,13 @@ async def predict_disease(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error in disease prediction: {str(e)}")
 
-# @app.get("/options/soil-types")
-# async def get_soil_types():
-#     return {"soil_types": list(SOIL_TYPES.keys())}
+@app.get("/options/soil-types")
+async def get_soil_types():
+    return {"soil_types": list(SOIL_TYPES.keys())}
 
-# @app.get("/options/crop-types")
-# async def get_crop_types():
-#     return {"crop_types": list(CROP_TYPES.keys())}
+@app.get("/options/crop-types")
+async def get_crop_types():
+    return {"crop_types": list(CROP_TYPES.keys())}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
