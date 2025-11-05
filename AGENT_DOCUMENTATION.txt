@@ -1,0 +1,390 @@
+================================================================================
+                    AGRITECH AI - COMPREHENSIVE AGENT DOCUMENTATION
+================================================================================
+
+PROJECT OVERVIEW:
+================================================================================
+AgriTech AI is a comprehensive agricultural AI system that empowers farmers with 
+intelligent decision-making tools for crop management, fertilizer optimization, 
+and disease detection. The system consists of three main AI-powered features.
+
+DEVELOPER: Uday Raj
+TECHNOLOGY: React (Frontend) + FastAPI (Backend) + TensorFlow/Scikit-learn (ML)
+
+================================================================================
+                           SYSTEM FEATURES & CAPABILITIES
+================================================================================
+
+1. 🌱 CROP RECOMMENDATION SYSTEM
+================================================================================
+Purpose: Suggests optimal crops based on soil and climate analysis
+Model: Random Forest Classifier
+Accuracy: 99%
+
+INPUT PARAMETERS:
+- Nitrogen (N): 0-150 kg/hectare
+- Phosphorus (P): 0-150 kg/hectare  
+- Potassium (K): 0-150 kg/hectare
+- Temperature: 0-50°C
+- Humidity: 0-100%
+- Soil pH: 0-14
+- Rainfall: 0-300mm
+
+SUPPORTED CROPS (22 varieties):
+Rice, Maize, Jute, Cotton, Coconut, Papaya, Orange, Apple, Muskmelon, 
+Watermelon, Grapes, Mango, Banana, Pomegranate, Lentil, Blackgram, 
+Mungbean, Mothbeans, Pigeonpeas, Kidneybeans, Chickpea, Coffee
+
+OUTPUT: Top 3 crop recommendations with confidence scores
+
+API ENDPOINT: POST https://argi.in/crop-recom
+Request Body:
+{
+  "nitrogen": float,
+  "phosphorus": float, 
+  "potassium": float,
+  "temperature": float,
+  "humidity": float,
+  "ph": float,
+  "rainfall": float
+}
+
+Response:
+{
+  "prediction": "Rice",
+  "confidence": 0.95,
+  "alternatives": ["Rice", "Wheat", "Barley"]
+}
+
+================================================================================
+
+2. 🌾 FERTILIZER RECOMMENDATION SYSTEM
+================================================================================
+Purpose: Recommends optimal fertilizer formulations for specific soil/crop conditions
+Model: Decision Tree Classifier
+Accuracy: 99.9%
+
+INPUT PARAMETERS:
+- Temperature: 0-50°C
+- Humidity: 0-100%
+- Soil Moisture: 0-100%
+- Soil Type: Loamy, Sandy, Clayey, Black, Red
+- Nitrogen: 0-140 kg/hectare
+- Potassium: 0-200 kg/hectare
+- Phosphorus: 0-200 kg/hectare
+- Crop Type: 11 supported crops
+
+SUPPORTED CROPS FOR FERTILIZER:
+Sugarcane, Cotton, Millets, Paddy, Pulses, Wheat, Tobacco, Barley, 
+Oil Seeds, Ground Nuts, Maize
+
+SUPPORTED FERTILIZERS:
+Urea, DAP, 14-35-14, 28-28, 17-17-17, 20-20, 10-26-26
+
+API ENDPOINT: POST https://argi.in/ferti-recom
+Request Body:
+{
+  "temperature": float,
+  "humidity": float,
+  "moisture": float,
+  "soil_type": "Loamy",
+  "nitrogen": float,
+  "potassium": float,
+  "phosphorus": float,
+  "crop_type": "Wheat"
+}
+
+Response:
+{
+  "prediction": "Urea"
+}
+
+================================================================================
+
+3. 🍃 CROP DISEASE DETECTION SYSTEM
+================================================================================
+Purpose: AI-powered disease detection from plant leaf images
+Model: Convolutional Neural Network (CNN)
+Accuracy: 98%
+
+INPUT: Plant leaf image (JPG, PNG, JPEG)
+PROCESSING: Image preprocessing, CNN analysis, disease classification
+
+SUPPORTED PLANTS & DISEASES (25+ plant varieties, 50+ conditions):
+
+APPLE:
+- Apple Scab (Fungal disease - Venturia inaequalis)
+- Black Rot (Fungal disease - Botryosphaeria)
+- Cedar Apple Rust (Fungal disease - Gymnosporangium)
+- Healthy
+
+BLUEBERRY:
+- Healthy
+
+CHERRY:
+- Powdery Mildew (Fungal disease - Erysiphales species)
+- Healthy
+
+CORN:
+- Cercospora Leaf Spot/Gray Leaf Spot
+- Common Rust (Fungal disease - Puccinia sorghi)
+- Northern Leaf Blight
+- Healthy
+
+GRAPE:
+- Black Rot (Fungal disease - Guignardia bidwellii)
+- Esca/Black Measles (Complex fungal trunk disease)
+- Leaf Blight/Isariopsis Leaf Spot
+- Healthy
+
+ORANGE:
+- Huanglongbing/Citrus Greening (Bacterial disease)
+
+PEACH:
+- Bacterial Spot (Xanthomonas campestris pv. pruni)
+- Healthy
+
+BELL PEPPER:
+- Bacterial Spot (Xanthomonas spp.)
+- Healthy
+
+POTATO:
+- Early Blight (Fungal disease - Alternaria solani)
+- Late Blight (Serious oomycete - Phytophthora infestans)
+- Healthy
+
+RASPBERRY:
+- Healthy
+
+SOYBEAN:
+- Healthy
+
+SQUASH:
+- Powdery Mildew (Fungal disease - Podosphaera/Erysiphe spp.)
+
+STRAWBERRY:
+- Leaf Scorch (Bacterial/fungal)
+- Healthy
+
+TOMATO (10 conditions):
+- Bacterial Spot (Xanthomonas spp.)
+- Early Blight (Alternaria solani)
+- Late Blight (Phytophthora infestans)
+- Leaf Mold (Passalora fulva)
+- Septoria Leaf Spot (Septoria lycopersici)
+- Spider Mites/Two-Spotted Spider Mite
+- Target Spot (Corynespora cassiicola)
+- Yellow Leaf Curl Virus (Viral disease)
+- Mosaic Virus (Tobacco mosaic virus)
+- Healthy
+
+WHEAT:
+- Brown Rust (Puccinia triticina)
+- Yellow Rust (Puccinia striiformis)
+- Healthy
+
+RICE (10 conditions):
+- Bacterial Leaf Blight (Xanthomonas oryzae pv. oryzae)
+- Brown Spot (Bipolaris oryzae)
+- Hispa (Insect pest - Dicladispa armigera)
+- Leaf Blast (Magnaporthe oryzae)
+- Leaf Scald (Microdochium oryzae)
+- Narrow Brown Spot (Cercospora oryzae)
+- Neck Blast (Magnaporthe oryzae)
+- Sheath Blight (Rhizoctonia solani)
+- Tungro (Viral disease - Nephotettix virescens)
+- Healthy
+
+API ENDPOINT: POST https://argi.in/disease-detect
+Request: Multipart form data with image file
+
+Response:
+{
+  "prediction": "Apple - Apple Scab",
+  "plant": "Apple",
+  "disease": "Apple Scab",
+  "is_healthy": false,
+  "confidence": 0.94
+}
+
+DETAILED DISEASE INFORMATION PROVIDED:
+- Disease Description
+- Symptoms
+- Treatment Steps
+- Fertilizer Suggestions
+- Recovery Time Period
+
+================================================================================
+                         AGENT INSTRUCTIONS FOR PLANT/CROP INFO
+================================================================================
+
+When users request information about plants or crops, your AI agent should:
+
+1. 🌾 CROP INFORMATION RESPONSES:
+================================================================================
+For any crop, provide comprehensive information including:
+- Growing conditions (soil type, pH, climate)
+- Nutrient requirements (NPK values)
+- Growing season and harvest time
+- Common diseases and pests
+- Water and irrigation needs
+- Yield potential and economic value
+- Suitable geographical regions
+
+Recommended sources for crop information:
+- Agricultural universities (FAO, USDA, state ag departments)
+- Extension services
+- Scientific journals and research papers
+- Government agricultural databases
+
+2. 🍃 PLANT DISEASE INFORMATION RESPONSES:
+================================================================================
+For plant diseases, provide:
+- Disease identification and symptoms
+- Causal organisms (fungi, bacteria, viruses)
+- Environmental conditions favoring disease
+- Treatment and management strategies
+- Preventive measures
+- Economic impact and yield losses
+- Resistant varieties available
+
+3. 🌡️ SOIL AND CLIMATE INFORMATION:
+================================================================================
+Provide guidance on:
+- Soil testing and interpretation
+- pH management for different crops
+- Nutrient deficiency symptoms
+- Climate adaptation strategies
+- Irrigation scheduling
+- Fertilizer application timing
+
+4. 📊 FARMING PRACTICES INFORMATION:
+================================================================================
+Share knowledge on:
+- Crop rotation benefits
+- Integrated pest management (IPM)
+- Organic farming techniques
+- Precision agriculture tools
+- Sustainable farming practices
+- Post-harvest handling
+
+================================================================================
+                              API INTEGRATION EXAMPLES
+================================================================================
+
+EXAMPLE 1: Crop Recommendation Request
+=====================================
+User: "I have soil with N=80, P=45, K=60, temp=25°C, humidity=60%, pH=6.5, rainfall=100mm. What crops should I plant?"
+
+Agent Action:
+1. Collect all required parameters
+2. POST to https://argi.in/crop-recom
+3. Present top 3 recommendations with confidence
+4. Provide additional crop information if requested
+
+EXAMPLE 2: Disease Detection Request
+===================================
+User: "I have tomato leaves with dark spots. Can you identify the disease?"
+
+Agent Action:
+1. Ask user to upload leaf image
+2. POST image to https://argi.in/disease-detect
+3. Provide diagnosis with detailed treatment information
+4. Suggest preventive measures
+
+EXAMPLE 3: Fertilizer Recommendation
+===================================
+User: "I'm growing wheat in loamy soil. What fertilizer should I use?"
+
+Agent Action:
+1. Collect all fertilizer parameters
+2. POST to https://argi.in/ferti-recom
+3. Provide fertilizer recommendation
+4. Explain application timing and methods
+
+================================================================================
+                              RESPONSE TEMPLATES
+================================================================================
+
+CROP RECOMMENDATION RESPONSE:
+Based on your soil and climate conditions, I recommend:
+1. [Primary Crop] (Confidence: XX%)
+2. [Secondary Crop] 
+3. [Tertiary Crop]
+
+[Provide detailed information about each recommended crop]
+
+DISEASE DETECTION RESPONSE:
+I've analyzed your plant image and detected:
+Plant: [Plant Name]
+Condition: [Disease Name]
+Confidence: XX%
+
+Description: [Disease description]
+Symptoms: [Observed symptoms]
+Treatment: [Step-by-step treatment]
+Recovery Time: [Expected timeframe]
+
+FERTILIZER RECOMMENDATION RESPONSE:
+Based on your soil and crop conditions, I recommend:
+Fertilizer: [Fertilizer Name]
+
+Application: [How and when to apply]
+Amount: [Recommended dosage]
+Note: [Additional considerations]
+
+================================================================================
+                               WEBSITES FOR PLANT/CROP INFO
+================================================================================
+
+AUTHORITATIVE SOURCES:
+- FAO.org (Food and Agriculture Organization)
+- USDA.gov (United States Department of Agriculture)
+- Extension.org (University extension services)
+- IPMcenters.org (Integrated Pest Management)
+- Knowledge transfer from agricultural research institutions
+
+CROP DATABASES:
+- Crop Science Society publications
+- Agricultural university research papers
+- Government agricultural statistics
+- International crop research centers
+
+================================================================================
+                               ERROR HANDLING
+================================================================================
+
+If API calls fail, inform user that:
+1. The service is temporarily unavailable
+2. Please try again later
+3. For immediate assistance, contact support@agritech.ai
+
+Always provide fallback information from your knowledge base when APIs are down.
+
+================================================================================
+                                 FINAL NOTES
+================================================================================
+
+Your AI agent should:
+1. Always be helpful and informative
+2. Provide practical, actionable advice
+3. Use the AgriTech AI APIs when available
+4. Fall back to web knowledge when needed
+5. Maintain user privacy and data security
+6. Stay updated with latest agricultural practices
+7. Encourage sustainable farming practices
+8. Provide emergency contact information for critical issues
+
+Remember: You are assisting farmers in making crucial agricultural decisions 
+that affect their livelihoods and food security. Always provide accurate, 
+evidence-based information and encourage consultation with local agricultural 
+experts when in doubt.
+
+Contact: support@agritech.ai
+Developer: Uday Raj
+Website: www.agritech.ai
+Mobile App: Coming Soon
+
+================================================================================
+                                 END OF DOCUMENTATION
+================================================================================
