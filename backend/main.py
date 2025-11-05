@@ -18,7 +18,7 @@ app = FastAPI(title="SmartAgri AI API", version="1.0.0")
 # Add CORS middlewareallow_origins=[ FRONTEND_URL , "http://127.0.0.1:3000"],
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[ "http://localhost:3000" , "http://127.0.0.1:3000" ],
+    allow_origins=[ "http://localhost:3000" , "https://agritech-c6vy.onrender.com" ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
