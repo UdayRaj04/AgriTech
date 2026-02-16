@@ -185,5 +185,12 @@ const FertilizerRecommendation = () => {
     </div>
   );
 };
+// const FertilizerRecommendation = () => {
+//   return (
+//     <div className="page fertilizer-page">
+//       <h1>🌾 Smart Fertilizer Recommendation System</h1>
+//     </div>
+//   );
+// };
 
 export default FertilizerRecommendation;

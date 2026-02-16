@@ -180,11 +180,11 @@ const About = () => {
           </div>
         </section>
 
-        {/* <section className="supported-plants">
+        <section className="supported-plants">
           <h2>🌿 Supported Plants & Diseases</h2>
           <p>Our disease detection model can identify health conditions for the following plants:</p>
           
-          <div className="plants-grid">
+          {/* <div className="plants-grid">
             {supportedPlants.map((plantInfo, index) => (
               <div key={index} className="plant-card">
                 <h4>🌱 {plantInfo.plant}</h4>
@@ -200,14 +200,14 @@ const About = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
           
           <div className="plant-summary">
             <p><strong>Total Coverage:</strong> 25 plant varieties with 50+ different health conditions</p>
             <p><strong>Diseases Detected:</strong> Various fungal, bacterial, viral infections, nutritional deficiencies, and pest damage</p>
             <p><strong>Healthy Recognition:</strong> Confirms plant health when no diseases are detected</p>
           </div>
-        </section> */}
+        </section>
 
         <section className="datasets">
           <h2>📈 Datasets</h2>

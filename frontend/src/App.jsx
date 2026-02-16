@@ -8,7 +8,7 @@ import FertilizerRecommendation from './pages/FertilizerRecommendation';
 import DiseaseDetection from './pages/DiseaseDetection';
 import About from './pages/About';
 import './index.css';
-import ChatBot from './components/ChatBot';
+// import ChatBot from './components/ChatBot';
 
 const BACKENDURL = process.env.REACT_APP_BAKEND_URL;
 console.log(BACKENDURL);
@@ -27,7 +27,7 @@ function App() {
             <Route path="/about" element={<About />} />
           </Routes>
         </div>
-        <ChatBot />
+        {/* <ChatBot /> */} 
         <Footer />
       </div>
     </Router>

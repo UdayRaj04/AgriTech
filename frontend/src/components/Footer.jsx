@@ -1,12 +1,13 @@
 import React from 'react';
 import './footer.css';
+// import Team from "../pages/Team"
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="app-footer">
-      <div className="footer-content">
+      {/* <div className="footer-content">
         <div className="footer-section">
           <h3>AgriTech AI</h3>
           <p>Empowering farmers with AI-driven agricultural solutions for sustainable farming and increased productivity.</p>
@@ -41,7 +42,8 @@ const Footer = () => {
             <li>Report Issues: GitHub Issues</li>
           </ul>
         </div>
-      </div>
+      </div> */}
+      {/* <Team /> */}
       
       <div className="footer-bottom">
         <div className="footer-divider"></div>

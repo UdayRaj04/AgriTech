@@ -10,7 +10,7 @@ from typing import List
 import os
 from pathlib import Path
 from io import BytesIO
-
+#python -m uvicorn main11:app --reload    npm start  
 # Initialize FastAPI app
 app = FastAPI(title="SmartAgri AI API", version="1.0.0")
 FRONTEND_URL = "http://localhost:3000"
