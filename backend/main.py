@@ -117,8 +117,8 @@ async def root():
     return {"message": "SmartAgri AI API is running!"}
 
 @app.get("/health")
-async def health_check():
-    return {"status": "healthy", "models_loaded": True}
+def health():
+    return jsonify({"ok": True})
 
 @app.post("/predict/crop", response_model=PredictionResponse)
 async def predict_crop(request: CropPredictionRequest):
